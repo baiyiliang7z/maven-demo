@@ -1,17 +1,17 @@
-FROM tomcat:9.0-jdk11
+# 使用适合你的JDK版本的基础镜像
+FROM eclipse-temurin:11-jdk
 
-# 移除默认应用
-RUN rm -rf /usr/local/tomcat/webapps/*
+# 创建工作目录
+WORKDIR /app
 
-# 复制你的应用
-COPY target/untitled-1.0-SNAPSHOT.jar /usr/local/tomcat/webapps/ROOT.jar
+# 复制JAR文件到容器中（使用通配符匹配版本号）
+COPY target/*.jar app.jar
 
-# 可选：复制自定义配置
-# COPY config/server.xml /usr/local/tomcat/conf/server.xml
-# COPY config/context.xml /usr/local/tomcat/conf/context.xml
-
-# 设置环境变量
-ENV JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xmx512m -XX:MaxPermSize=256m"
-
+# 暴露端口（根据你的应用配置）
 EXPOSE 8080
-CMD ["catalina.sh", "run"]
+
+# 设置JVM参数（根据需求调整）
+ENV JAVA_OPTS="-Xmx512m -Xms256m"
+
+# 启动命令
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar app.jar"]
