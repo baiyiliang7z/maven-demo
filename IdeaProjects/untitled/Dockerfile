@@ -4,7 +4,7 @@ FROM tomcat:9.0-jdk11
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # 复制你的应用
-COPY *.jar /usr/local/tomcat/webapps/ROOT.war
+COPY target/untitled-1.0-SNAPSHOT.jar /usr/local/tomcat/webapps/ROOT.jar
 
 # 可选：复制自定义配置
 # COPY config/server.xml /usr/local/tomcat/conf/server.xml
