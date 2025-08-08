@@ -54,23 +54,25 @@ pipeline {
 
         stage('Deploy on 141') {
             steps {
-                sshagent(['deploy-root-key']) {
-                    withCredentials([usernamePassword(credentialsId: 'ACR_PASSWD',
-                                                      usernameVariable: 'ACR_USER',
-                                                      passwordVariable: 'ACR_PWD')]) {
-                        sh """
-                           ssh -o StrictHostKeyChecking=no ${USER}@${HOST} \
-                              "echo ${ACR_PWD} | docker login --username=${ACR_USER} --password-stdin ${ACR_DOMAIN}"
-                           ssh ${USER}@${HOST} "docker stop ${IMAGE_NAME} || true"
-                           ssh ${USER}@${HOST} "docker rm   ${IMAGE_NAME} || true"
-                           ssh ${USER}@${HOST} "docker pull ${FULL_IMAGE}"
-                           ssh ${USER}@${HOST} "docker run -d --restart=always -p 8080:8080 --name ${IMAGE_NAME} ${FULL_IMAGE}"
-                        """
+                script {                                  // ← 必须包一层 script
+                    sshagent(['deploy-root-key']) {
+                        withCredentials([usernamePassword(credentialsId: 'ACR_PASSWD',
+                                                          usernameVariable: 'ACR_USER',
+                                                          passwordVariable: 'ACR_PWD')]) {
+                            sh """
+                               ssh -o StrictHostKeyChecking=no root@172.16.88.141 \
+                                  "echo ${ACR_PWD} | docker login --username=${ACR_USER} --password-stdin crpi-k5gg1rbjrocgkfs3.cn-shenzhen.personal.cr.aliyuncs.com"
+                               ssh root@172.16.88.141 "docker stop maven-demo || true"
+                               ssh root@172.16.88.141 "docker rm   maven-demo || true"
+                               ssh root@172.16.88.141 "docker pull ${FULL_IMAGE}"
+                               ssh root@172.16.88.141 "docker run -d --restart=always -p 8080:8080 --name maven-demo ${FULL_IMAGE}"
+                            """
+                        }
                     }
                 }
             }
         }
-    }
+
     post {
         always {
             // 可选：构建完删除本地镜像，省磁盘
