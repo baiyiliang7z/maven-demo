@@ -18,7 +18,7 @@ pipeline {
 
         stage('mvn clean') {
             steps {
-                dir('maven-demo/IdeaProjects/untitled') {
+                dir('IdeaProjects/untitled') {
                     sh '''
                       export MAVEN_HOME=/opt/maven/apache-maven-3.8.8
                       export JAVA_HOME=/opt/jdk/jdk-23
