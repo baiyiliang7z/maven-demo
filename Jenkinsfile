@@ -54,7 +54,7 @@ pipeline {
 
         stage('Deploy on 141') {
             steps {
-                sshagent(['vm141-ssh']) {
+                sshagent(['deploy-root-key']) {
                     withCredentials([usernamePassword(credentialsId: 'ACR_PASSWD',
                                                       usernameVariable: 'ACR_USER',
                                                       passwordVariable: 'ACR_PWD')]) {
