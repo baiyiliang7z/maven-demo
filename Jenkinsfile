@@ -32,9 +32,11 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                script {
-                    // --no-cache 保证每次都重新 COPY 最新的 jar
-                    def img = docker.build("${FULL_IMAGE}", "--no-cache .")
+                dir('IdeaProjects/untitled') {
+                    script {
+                        // --no-cache 保证每次都重新 COPY 最新的 jar
+                        def img = docker.build("${FULL_IMAGE}", "--no-cache .")
+                    }
                 }
             }
         }
