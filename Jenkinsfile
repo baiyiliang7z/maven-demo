@@ -16,9 +16,9 @@ pipeline {
             }
         }
 
-        stage('helloworld/maven-demo/IdeaProjects/untitled/') {
+        stage('mvn clean') {
             steps {
-                dir('maven-demo') {
+                dir('helloworld/maven-demo/IdeaProjects/untitled/') {
                     sh '''
                       export MAVEN_HOME=/opt/maven/apache-maven-3.8.8
                       export JAVA_HOME=/opt/jdk/jdk-23
