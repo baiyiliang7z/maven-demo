@@ -18,7 +18,12 @@ pipeline {
 
         stage('Maven Build') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                sh '''
+                  export MAVEN_HOME=/opt/maven/apache-maven-3.8.8
+                  export JAVA_HOME=/opt/jdk/jdk-23
+                  export PATH=$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH
+                  mvn clean package -DskipTests
+                '''
             }
         }
 
