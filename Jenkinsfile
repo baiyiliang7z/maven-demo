@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Maven Build') {
+        stage('maven-demo/IdeaProjects/untitled') {
             steps {
                 dir('maven-demo') {
                     sh '''
